@@ -1,21 +1,26 @@
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { Container } from "./style";
 
-import React from 'react'
-import { Container } from './style'
+const CardCountry = ({item}) => {
+  const navigate = useNavigate()
+  const infoCountry = () => {
+    navigate('/country')
+  };
 
-const CardCountry = ({flag,country,population,region,capital}) => {
   return (
-    <Container>
-        <figure>
-            <img src={flag} alt="" />
-        </figure>
-        <div className="infoCountry">
-            <h2>{country}</h2>
-            <p>Population: {population}</p>
-            <p>Region: {region}</p>
-            <p>Capital: {capital}</p>
-        </div>
+    <Container onClick={infoCountry}>
+      <figure>
+        <img src={item.flags.svg} alt="" />
+      </figure>
+      <div className="infoCountry">
+        <h2>{item.name.common}</h2>
+        <p><span>Population: </span>{item.population}</p>
+        <p><span>Region: </span>{item.region}</p>
+        <p><span>Capital: </span>{item.capital}</p>
+      </div>
     </Container>
-  )
-}
+  );
+};
 
-export default CardCountry
+export default CardCountry;

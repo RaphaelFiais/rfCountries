@@ -1,26 +1,32 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
-    width: 220px;
-    height: 300px;
-    display: flex;   
-    flex-direction: column;
-    background:hsl(209, 23%, 22%);
+export const Container = styled.div`   
+    cursor: pointer;
+    background:hsl(209, 23%, 22%);        
     
-    figure{
-        display: flex;
-        align-items: center;
-        justify-content: center;
+   
         img{
-            width: 100%;
-            height: 150px;
-        }
-    }
+            width: 320px;
+            height: 200px;            
+        }        
+   
     .infoCountry{
+        
         display: flex;
         flex-direction: column;
-        gap: 10px;
-        margin-top: 10px;
-        padding-left: 20px;
+        gap: 10px;        
+        padding: 20px;
+        color: #fff;
+        h2,p{
+            max-width: 280px;
+            
+        }
+        h2{
+            font-size: 20px;
+            
+        }
+        p{
+            font-size: 16px;
+        }
     }
 `

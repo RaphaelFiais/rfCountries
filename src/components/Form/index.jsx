@@ -11,6 +11,7 @@ const CountryForm = () => {
   const [allCountry, setAllCountry] = useState([]);
   const [search, setSearch] = useState("");
   const [countryFiltred, setCountryFiltred] = useState([]);
+  const [regionLabel, setRegionLabel] = useState("");
 
   useEffect(() => {
     const getCountry = async () => {
@@ -23,18 +24,16 @@ const CountryForm = () => {
 
   const handleChange = async (event) => {
     const region = event.target.value;
-    await fetch(`https://restcountries.com/v3.1/region/${region}`)
-      .then((resp) => resp.json())
-      .then((data) => setCountryFiltred(data));      
+    setRegionLabel(event.target.value);
+    region
+      ? await fetch(`https://restcountries.com/v3.1/region/${region}`)
+          .then((resp) => resp.json())
+          .then((data) => setAllCountry(data))
+      : await fetch("https://restcountries.com/v3.1/all")
+          .then((resp) => resp.json())
+          .then((data) => setAllCountry(data));
   };
-  
-  /*const regionFilter = allCountry.filter((region) =>
-    region.region.includes(searchSelect.toLocaleLowerCase())
-  );*/
 
-  const filterCountry = (e) => {
-    setSearch(e.target.value);
-  };
   const countryFilter = allCountry.filter((country) =>
     country.name.common.toLocaleLowerCase().includes(search.toLocaleLowerCase())
   );
@@ -42,47 +41,39 @@ const CountryForm = () => {
   return (
     <Container>
       <div className="search">
-        <input type="text" onChange={filterCountry} />
-        <Box sx={{ minWidth: 120 }}>
+        <input
+          type="text"
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search for a country..."
+        />
+        <Box sx={{ minWidth: 140 }}>
           <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Age</InputLabel>
+            <InputLabel id="demo-simple-select-label">Region</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={allCountry}
-              label="Age"
+              value={regionLabel}
+              label="Region"
               onChange={handleChange}
             >
+              <MenuItem value="">All</MenuItem>
               <MenuItem value={"africa"}>Africa</MenuItem>
               <MenuItem value={"america"}>Americas</MenuItem>
               <MenuItem value={"europe"}>Europe</MenuItem>
               <MenuItem value={"asia"}>Asia</MenuItem>
               <MenuItem value={"oceania"}>Oceania</MenuItem>
-              <MenuItem value={''}>Todos</MenuItem>
             </Select>
           </FormControl>
         </Box>
       </div>
       <ContainerCountry>
-        {countryFiltred.length > 0 ? countryFiltred.map((item) => (
-          <CardCountry
-            key={item.name.common}
-            country={item.name.common}
-            population={item.population}
-            flag={item.flags.svg}
-            region={item.region}
-            capital={item.capital}
-          />
-        )) : countryFilter.map((item) => (
-          <CardCountry
-            key={item.name.common}
-            country={item.name.common}
-            population={item.population}
-            flag={item.flags.svg}
-            region={item.region}
-            capital={item.capital}
-          />
-        ))}
+        {countryFiltred.length > 0
+          ? countryFiltred.map((item) => (
+              <CardCountry key={item.name.common} item={item} />
+            ))
+          : countryFilter.map((item) => (
+              <CardCountry key={item.name.common} item={item} />
+            ))}
       </ContainerCountry>
     </Container>
   );

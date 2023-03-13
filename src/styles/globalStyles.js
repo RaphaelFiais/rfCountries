@@ -10,7 +10,7 @@ import { createGlobalStyle } from "styled-components";
     button{
         cursor: pointer;
     }
-
+    
 `
 
 export default GlobalStyle
